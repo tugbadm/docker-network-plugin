@@ -2,6 +2,7 @@ package mydriver
 
 import (
 	"fmt"
+	"net"
 
 	"github.com/docker/go-plugins-helpers/network"
 )
@@ -21,23 +22,24 @@ func (d *MyDriver) GetCapabilities() (*network.CapabilitiesResponse, error) {
 }
 
 func (d *MyDriver) CreateNetwork(request *network.CreateNetworkRequest) error {
-	/*	interfaces, err := net.Interfaces()
-		if err != nil {
-			return &network.ErrorResponse{
-				Err: "cannot get network interfaces",
-			}
-		}
-			for _, i := range interfaces {
-				if i.Name == request.Options.Generic.Bridge {
-					return nil
-				}
-			}
+	options := request.Options["com.docker.network.generic"]
+	bridge, ok := options.(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("invalid data in request: %v", options)
+	}
 
-			return &network.ErrorResponse{
-				Err: fmt.Sprintf(`network interface "%s" does not exist`, request.Options.Generic.Bridge),
-			}
-	*/
-	return nil
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		return fmt.Errorf("cannot get network interfaces")
+	}
+
+	for _, i := range interfaces {
+		if i.Name == bridge["bridge"] {
+			return nil
+		}
+	}
+
+	return fmt.Errorf(`bridge "%s" does not exist`, bridge["bridge"])
 }
 
 func (d *MyDriver) DeleteNetwork(request *network.DeleteNetworkRequest) error {
