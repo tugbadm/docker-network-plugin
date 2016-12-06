@@ -27,10 +27,12 @@ package main
 
 import (
 	"github.com/tugbadartici/docker-network-plugin"
+	"github.com/docker/go-plugins-helpers/network"
 )
 
 func main() {
 	d := mydriver.NewDriver()
-	d.Handle(":8010")
+	h := network.NewHandler(d)
+	h.ServeTCP("test", ":8010", nil)
 }
 ```
