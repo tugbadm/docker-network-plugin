@@ -1,10 +1,10 @@
 package mydriver
 
 import (
-	"gongular"
 	"log"
 
 	"github.com/docker/go-plugins-helpers/network"
+	"github.com/mustafaakin/gongular"
 )
 
 const (

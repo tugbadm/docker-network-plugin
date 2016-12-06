@@ -2,9 +2,10 @@ package mydriver
 
 import (
 	"fmt"
-	"gongular"
 	"net"
 	"net/http"
+
+	"github.com/mustafaakin/gongular"
 
 	"github.com/docker/go-plugins-helpers/network"
 )
