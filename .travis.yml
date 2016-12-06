@@ -1,0 +1,10 @@
+language: go
+sudo: false
+go:
+  - 1.7
+
+install:
+install:
+  - go get github.com/docker/go-plugins-helpers/network
+  - go get github.com/mustafaakin/gongular
+
