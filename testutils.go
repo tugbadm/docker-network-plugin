@@ -1,4 +1,0 @@
-package mydriver
-
-func getDemoDriver() {
-}
