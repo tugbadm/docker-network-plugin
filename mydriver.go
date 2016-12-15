@@ -4,20 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+
 	"github.com/docker/go-plugins-helpers/network"
-	"github.com/vishvananda/netlink"
 	"github.com/fsouza/go-dockerclient"
+	"github.com/vishvananda/netlink"
 )
 
 type MyDriver struct {
 	networks map[string]Network
 }
 
-type Network struct{
-	bridge string
+type Network struct {
+	bridge    string
 	endpoints map[string]Endpoint
 }
-type Endpoint struct{
+type Endpoint struct {
 	vethHost string
 	vethCont string
 }
@@ -48,7 +49,7 @@ func (d *MyDriver) CreateNetwork(request *network.CreateNetworkRequest) error {
 	for _, i := range interfaces {
 		if i.Name == bridge["bridge"] { // bridge exists
 			d.networks[request.NetworkID] = Network{
-				bridge: i.Name,
+				bridge:    i.Name,
 				endpoints: map[string]Endpoint{},
 			}
 			return nil
@@ -98,12 +99,12 @@ func (d *MyDriver) DeleteEndpoint(request *network.DeleteEndpointRequest) error 
 
 func (d *MyDriver) EndpointInfo(request *network.InfoRequest) (*network.InfoResponse, error) {
 	endpointInfo := make(map[string]string)
-	d := Docker{
+	docker := Docker{
 		client: &docker.Client{},
 	}
 
-	endpoint, err := d.GetContainerInfo(request.EndpointID)
-	if err != nil{
+	endpoint, err := docker.GetContainerInfo(request.EndpointID)
+	if err != nil {
 		return nil, err
 	}
 
@@ -136,7 +137,7 @@ func (d *MyDriver) Join(request *network.JoinRequest) (*network.JoinResponse, er
 
 	return &network.JoinResponse{
 		InterfaceName: network.InterfaceName{
-			SrcName:  d.networks[request.NetworkID].endpoints[request.EndpointID].vethCont,
+			SrcName:   d.networks[request.NetworkID].endpoints[request.EndpointID].vethCont,
 			DstPrefix: "eth",
 		},
 	}, nil
