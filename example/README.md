@@ -29,5 +29,5 @@ You might not set ip-range and subnet, but if you do you will have an isolated n
 docker run -ti -network=mynet ubuntu:14.04 bash
 ```
 
-
+more details checkout: http://inabiaf.me/docker-networking-with-plugin/
 
