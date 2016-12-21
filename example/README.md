@@ -1,4 +1,4 @@
-1- Create a bridge, __mydriver__ plugin uses a bridge instead of Docker default bridge.
+1- Create a bridge, __mydriver__ plugin uses a bridge.
 ```bash
 brctl addbr br1
 ifconfig br1 10.0.1.1
