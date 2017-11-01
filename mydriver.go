@@ -25,6 +25,7 @@ type Endpoint struct {
 
 func NewDriver() *MyDriver {
 	d := new(MyDriver)
+	d.networks = make(map[string]Network)
 	return d
 }
 
